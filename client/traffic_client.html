@@ -10,8 +10,8 @@
 <script src=http://cdn.pubnub.com/pubnub-3.7.12.min.js></script>
 
 <style>
-	body { margin:0;padding:0;}
-	#map { position:absolute; top:0; bottom:0; width:100%; }
+   body { margin:0;padding:0;}
+   #map { position:absolute; top:0; bottom:0; width:100%; }
 </style>
 </head>
 <body>
@@ -68,7 +68,7 @@ var vehicle_marker = L.Marker.movingMarker(longroute,  [15000,15000,15000,15000,
 							80,80,80,80,80,80,80,80,80,80,348,348,348,348,0,50,50,50,50,50,
 							50,50,60,85,85,85,85,85,85,85,85,85,350],
 				{ icon:L.icon({
-					iconUrl:'file:///home/rajeev/Desktop/Leaflet.MovingMarker-master/myamb_svg.svg',
+					iconUrl:'https://github.com/shyampurk/m2m-traffic-corridor/blob/master/client/SVG/ambulance_car.svg',
 					iconSize: [45,45]})
 					
 				}).addTo(map);
@@ -184,12 +184,12 @@ function check_san(m2){
 		{
 			PN =parseInt(PN+1);
 			arrayA.push(str);
-			var Divisadero_st = L.marker([37.786188,-122.440033],{icon:exceptionIcon}).addTo(map);
+			var Divisadero_st = L.marker([37.786188,-122.440033],{icon:green_signalIcon}).addTo(map);
 			if (flag == true){vehicle_marker.fire('resume');}
 		}
 		else
 		{
-			var Divisadero_st = L.marker([37.786188,-122.440033],{icon:sanfrnsIcon}).addTo(map);
+			var Divisadero_st = L.marker([37.786188,-122.440033],{icon:ordinary_flowIcon1}).addTo(map);
 			flag = false;
 		}
 	}if(nu == 2){
@@ -197,12 +197,12 @@ function check_san(m2){
 		{
 			PN =parseInt(PN+1);
 			arrayA.push(str);
-			var Webster_st = L.marker([37.787237,-122.431801],{icon:exceptionIcon}).addTo(map);
+			var Webster_st = L.marker([37.787237,-122.431801],{icon:green_signalIcon}).addTo(map);
 			if (flag == true){vehicle_marker.fire('resume');}
 		}
 		else
 		{
-			var Webster_st = L.marker([37.787237,-122.431801],{icon:sanfrns1Icon}).addTo(map);
+			var Webster_st = L.marker([37.787237,-122.431801],{icon:ordinary_flowIcon2}).addTo(map);
 			flag = false;
 		}
 	}if (nu == 3){
@@ -210,12 +210,12 @@ function check_san(m2){
 		{
 			PN =parseInt(PN+1);
 			arrayA.push(str);
-			var Gough_st = L.marker([37.785359,-122.424704],{icon:exceptionIcon}).addTo(map);
+			var Gough_st = L.marker([37.785359,-122.424704],{icon:green_signalIcon}).addTo(map);
 			if (flag == true){vehicle_marker.fire('resume');}
 		}
 		else
 		{
-			var Gough_st = L.marker([37.785359,-122.424704],{icon:sanfrns1Icon}).addTo(map);
+			var Gough_st = L.marker([37.785359,-122.424704],{icon:ordinary_flowIcon2}).addTo(map);
 			flag = false;
 		}
 	}if (nu == 4){
@@ -223,12 +223,12 @@ function check_san(m2){
 		{
 			PN =parseInt(PN+1);
 			arrayA.push(str);
-			var Fulton_st = L.marker([37.778739,-122.423349],{icon:exceptionIcon}).addTo(map);
+			var Fulton_st = L.marker([37.778739,-122.423349],{icon:green_signalIcon}).addTo(map);
 			if (flag == true){vehicle_marker.fire('resume');}
 		}
 		else
 		{
-			var Fulton_st = L.marker([37.778739,-122.423349],{icon:sanfrns2Icon}).addTo(map);
+			var Fulton_st = L.marker([37.778739,-122.423349],{icon:ordinary_flowIcon3}).addTo(map);
 			flag = false;
 		}
 	}if (nu == 5){
@@ -236,12 +236,12 @@ function check_san(m2){
 		{
 			PN =parseInt(PN+1);
 			arrayA.push(str);
-			var Fell_St = L.marker([37.776381,-122.419514],{icon:exceptionIcon}).addTo(map);
+			var Fell_St = L.marker([37.776381,-122.419514],{icon:green_signalIcon}).addTo(map);
 			if (flag == true){vehicle_marker.fire('resume');}
 		}
 		else
 		{
-			var Fell_st = L.marker([37.776381,-122.419514],{icon:sanfrnsIcon}).addTo(map);
+			var Fell_st = L.marker([37.776381,-122.419514],{icon:ordinary_flowIcon1}).addTo(map);
 			flag = false;
 		}
 	}if (nu == 6){
@@ -249,12 +249,12 @@ function check_san(m2){
 		{
 			PN =parseInt(PN+1);
 			arrayA.push(str);
-			var Folsom_St = L.marker([37.772811,-122.412835],{icon:exceptionIcon}).addTo(map);
+			var Folsom_St = L.marker([37.772811,-122.412835],{icon:green_signalIcon}).addTo(map);
 			if (flag == true){vehicle_marker.fire('resume');}
 		}
 		else
 		{
-			var Folsom_St = L.marker([37.772811,-122.412835],{icon:sanfrns2Icon}).addTo(map);
+			var Folsom_St = L.marker([37.772811,-122.412835],{icon:ordinary_flowIcon3}).addTo(map);
 			flag = false;
 		}
 	}if (nu == 7){
@@ -262,12 +262,12 @@ function check_san(m2){
 		{
 			PN =parseInt(PN+1);
 			arrayA.push(str);
-			var sixteenth_st = L.marker([37.765782,-122.407557],{icon:exceptionIcon}).addTo(map);
+			var sixteenth_st = L.marker([37.765782,-122.407557],{icon:green_signalIcon}).addTo(map);
 			if (flag == true){vehicle_marker.fire('resume');}
 		}
 		else
 		{
-			var sixteenth_st = L.marker([37.765782,-122.407557],{icon:sanfrnsIcon}).addTo(map);
+			var sixteenth_st = L.marker([37.765782,-122.407557],{icon:ordinary_flowIcon1}).addTo(map);
 			flag = false;
 		}
 	}
@@ -296,27 +296,27 @@ function sub_san(){
 			})
 		};
 sub_san();
-var exceptionIcon = L.icon({
-	iconUrl:'',
-	iconSize: [60,50],
-	iconAnchor:[22,94],
-	popupAnchor:[-3,-76]});
+var green_signalIcon = L.icon({
+	iconUrl:     'https://github.com/shyampurk/m2m-traffic-corridor/blob/master/client/SVG/green_signal.svg',
+	iconSize:    [60,50],
+	iconAnchor:  [22,94],
+	popupAnchor: [-3,-76]});
 
-var sanfrnsIcon = L.icon({
-       iconUrl:'file:///home/rajeev/Desktop/Leaflet.MovingMarker-master/Leaflet.MovingMarker-master/examples/Traffic-lights.svg',
+var ordinary_flowIcon1 = L.icon({
+       iconUrl:      'https://github.com/shyampurk/m2m-traffic-corridor/blob/master/client/SVG/ordinary_flow1.svg',
        iconSize:     [65, 50], // size of the icon
        iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
        popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
 });
 
-var sanfrns1Icon = L.icon({
-       iconUrl:'file:///home/rajeev/Leaflet.MovingMarker-master/Leaflet.MovingMarker-master/examples/ord1.svg',
+var ordinary_flowIcon2 = L.icon({
+       iconUrl:      'https://github.com/shyampurk/m2m-traffic-corridor/blob/master/client/SVG/ordinary_flow2.svg',
        iconSize:     [65, 50], // size of the icon
        iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
        popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
 });
-var sanfrns2Icon = L.icon({
-       iconUrl:'file:///home/rajeev/Leaflet.MovingMarker-master/Leaflet.MovingMarker-master/examples/ord2.svg',
+var ordinary_flowIcon3 = L.icon({
+       iconUrl:	     'https://github.com/shyampurk/m2m-traffic-corridor/blob/master/client/SVG/ordinary_flow3.svg',
        iconSize:     [65, 50], // size of the icon
        iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
        popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
