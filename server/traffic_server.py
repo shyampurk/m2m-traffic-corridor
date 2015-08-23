@@ -10,8 +10,8 @@ import time
 import bearing
 import random
 
-pubnub = Pubnub(publish_key="pub-c-8f807eab-2a85-44fc-bfca-e9ff6e22cdc9",       # publish and subscribe keys
-				subscribe_key="sub-c-07dda524-1406-11e5-90f9-02ee2ddab7fe")   
+pubnub = Pubnub(publish_key="your-publish-key",       # publish and subscribe keys
+				subscribe_key="your-subscribe-key")   
 
 g_NAS = int(1)  	# Next Approaching Signal 
 g_PASA =str('167')  # Present Approaching Signal Angle
