@@ -11,18 +11,18 @@ import bearing
 import random
 
 pubnub = Pubnub(publish_key="your-publish-key",       # publish and subscribe keys
-				subscribe_key="your-subscribe-key")   
+		subscribe_key="your-subscribe-key")   
 
 g_NAS = int(1)  	# Next Approaching Signal 
-g_PASA =str('167')  # Present Approaching Signal Angle
+g_PASA =str('167')  	# Present Approaching Signal Angle
 g_cmd = True		# Command flag
-g_flag = True       # check flag
+g_flag = True       	# check flag
 g_count = int(0)	# count variable
 def main_function(lat,lng):
   global g_flag,g_count,g_NAS,g_PASA,g_cmd
 	
 	l_list1 = ["37.786188 -122.440033","37.787237 -122.431801","37.785359 -122.424704","37.778739 -122.423349","37.776381 -122.419514","37.772811 -122.412835",
-			   "37.765782 -122.407557","37.756809 -122.406781","37.756930 -122.405238"]
+		   "37.765782 -122.407557","37.756809 -122.406781","37.756930 -122.405238"]
 	l_signal = ["Divisadero_st","Webster_st","Gough_st","Fulton_st","Fell_st","Folsom_St","sixteenth_st",""]
 	if (g_flag == True):
 		print "Ambulance started from UCSF MEDICAL CENTER AT MOUNT ZION\n"
@@ -39,7 +39,7 @@ def main_function(lat,lng):
 		l_bearing = str(180-l_bearing)
 	l_brng2 = str (l_bearing)
 	ran = random.randrange(1,7,1) 
-	if (g_NAS<=7):	
+	if (g_NAS<=8):	
 	
 		if((g_PASA[0]) != (l_brng2[0])):                                
 			if (g_cmd == False): 
