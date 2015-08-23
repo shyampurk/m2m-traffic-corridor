@@ -56,10 +56,10 @@ def main_function(lat,lng):
 				print "Ambulance is %d meter far from %s signal \n" %(l_distance,l_signal[g_NAS-1])
 				
 				if(g_NAS == ran):
-					if (count <= 2):
+					if (g_count <= 2):
 						print "Ambulance halted, at %s it has not received the message from server\n"%(l_signal[g_NAS-1])
 						time.sleep(10)
-						count = int(count +1)
+						g_count = int(g_count +1)
 						print "Ambulance resumed from %s  as it received the message from server\n"%(l_signal[g_NAS-1])
 				pubnub.publish(channel='pub_channel' ,message =("yes",g_NAS))
 				print "server sent a clearance message to %s signal \n"%(l_signal[g_NAS-1])
