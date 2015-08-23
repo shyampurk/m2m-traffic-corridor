@@ -44,8 +44,8 @@ def main_function(lat,lng):
 		if((g_PASA[0]) != (l_brng2[0])):                                
 			if (g_cmd == False): 
 				pubnub.publish(channel ='san' ,message = ("NO",g_NAS))
-				print "server sent a revert back message to %s signal \n"%(l_signal[g_NAS])
-				print "Ambulance crossed %s signal \n" %(l_signal[g_NAS])  
+				print "server sent a revert back message to %s signal \n"%(l_signal[g_NAS-1])
+				print "Ambulance crossed %s signal \n" %(l_signal[g_NAS-1])  
 				if (g_NAS<=7):
 					print "Ambulance is approaching %s signal next \n" %(l_signal[g_NAS])      
 				g_NAS = int(g_NAS+1)
@@ -53,7 +53,7 @@ def main_function(lat,lng):
 		
 		if (l_distance <=200 and l_distance >=100):
 			if (g_cmd == True):
-				print "Ambulance is 200 meter far from %s signal \n" %(l_signal[g_NAS-1])
+				print "Ambulance is %d meter far from %s signal \n" %(l_distance,l_signal[g_NAS-1])
 				
 				if(g_NAS == ran):
 					if (count <= 2):
