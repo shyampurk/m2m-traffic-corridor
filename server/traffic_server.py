@@ -43,7 +43,7 @@ def main_function(lat,lng):
 	
 		if((g_PASA[0]) != (l_brng2[0])):                                
 			if (g_cmd == False): 
-				pubnub.publish(channel ='san' ,message = ("NO",g_NAS))
+				pubnub.publish(channel ='pub_channel' ,message = ("NO",g_NAS))
 				print "server sent a revert back message to %s signal \n"%(l_signal[g_NAS-1])
 				print "Ambulance crossed %s signal \n" %(l_signal[g_NAS-1])  
 				if (g_NAS<=7):
@@ -61,7 +61,7 @@ def main_function(lat,lng):
 						time.sleep(10)
 						count = int(count +1)
 						print "Ambulance resumed from %s  as it received the message from server\n"%(l_signal[g_NAS-1])
-				pubnub.publish(channel='san' ,message =("yes",g_NAS))
+				pubnub.publish(channel='pub_channel' ,message =("yes",g_NAS))
 				print "server sent a clearance message to %s signal \n"%(l_signal[g_NAS-1])
 				print "%s signal changed to green \n" %(l_signal[g_NAS-1]) 				
 				g_PASA = l_brng2
@@ -89,5 +89,5 @@ def reconnect(message):
 def disconnect(message):
     print("DISCONNECTED")
 
-pubnub.subscribe(channels='test18', callback=callback, error=callback,
+pubnub.subscribe(channels='sub_channel', callback=callback, error=callback,
                  connect=connect, reconnect=reconnect, disconnect=disconnect)
