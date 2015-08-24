@@ -1,13 +1,13 @@
 #!usr/bin/python
 '''
 /********************************************************************************************
-Name 		 	    :  dis_calc 
+Name 		:  dis_calc 
 Description  	:  calculates the distance between given two lattitude and longitude 
-				         points 
-Parameters   	:  lat_1 and lng_1 are point one lattitude and longitude respectively 
-			           lat_2 and lon_2 are point two lattitude and longitude respectively
+		   points 
+Parameters   	:  l_lt1 and l_ln1 are point one lattitude and longitude respectively 
+		   l_lt2 and l_ln2 are point two lattitude and longitude respectively
 Return       	:  This function will return the distance between given two lattitude 
-				         and longitude points 
+	           and longitude points 
 **********************************************************************************************/
 '''
 import math
