@@ -2,11 +2,11 @@
 <html>
 <head>
 <meta charset=utf-8 />
-<title>Real-Time Traffic Corridor for Emergency Vehicle (SanFransisco)</title>
+<title>Real-Time Traffic Corridor for Emergency Vehicle (SanFrancisco)</title>
 <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 <script src='https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.js'></script>
 <link href='https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.css' rel='stylesheet' />
-<script type="text/javascript" src="../MovingMarker_withrotation.js"></script>
+<script type="text/javascript" src="moving_marker_with_rotation.js"></script>
 <script src=http://cdn.pubnub.com/pubnub-3.7.12.min.js></script>
 
 <style>
@@ -32,6 +32,8 @@ pre.ui-coordinates {
 </style>
 <script>
 
+/*your mapbox access token and map id*/
+
 L.mapbox.accessToken = 'pk.eyJ1IjoiYXJhdmluZGMiLCJhIjoiOTBhNDM0ZWNmYTc3MDYzMjA0MjBmY2E5NGU3YmQ0MDYifQ.5s9Z-KPF9yvgT05nO12HOQ';
 var map = L.mapbox.map('map', 'aravindc.mln6j3bd',{
     // the options here prevent mouse wheel or trackpad scrolling
@@ -41,39 +43,85 @@ var map = L.mapbox.map('map', 'aravindc.mln6j3bd',{
     minZoom: 10
 }).setView([37.7813,-122.4198], 16);
 
-var longroute = [ [37.784198 ,-122.439605],[37.784774 ,-122.439724],[37.786182 ,-122.440025],
-		  [37.786391 ,-122.438391],[37.786597 ,-122.436742],[37.786775 ,-122.435309],
-		  [37.786966 ,-122.433866],[37.787148 ,-122.432434],[37.787335 ,-122.431002],
-		  [37.787517 ,-122.429559],[37.787701 ,-122.428124],[37.787886 ,-122.426683],
-		  [37.78807 ,-122.425243],[37.787216 ,-122.425074],[37.786377 ,-122.424902],
-		  [37.78552 ,-122.424731],[37.784681,-122.424559], [37.783706 ,-122.424361],
-		  [37.782728 ,-122.424165],[37.781751 ,-122.423964],[37.780776 ,-122.423771],
-		  [37.7798 ,-122.423573],[37.778824 ,-122.423376],[37.777847 ,-122.423179],
-		  [37.776871,-122.422982],[37.776511 ,-122.422899],[37.776428 , -122.422907],
-		  [37.775949 ,-122.422792],[37.776105 ,-122.421586],[37.77626 ,-122.42038],
-		  [37.776417 ,-122.419176],[37.776574 , -122.417972],[37.776532 ,-122.417494],
-		  [37.775264 ,-122.415896],[37.773903 ,-122.41419],[37.772656 , -122.412623],
-		  [37.77141 , -122.411065],[37.770328,-122.409748],[37.769809,-122.409072],
-		  [37.769292,-122.408404],[37.768592,-122.407838],[37.767568,-122.407736],
-		  [37.766546 , -122.40764],[37.76552 ,-122.407543],[37.764498, -122.407444],
-		  [37.763365, -122.407339],[37.763208, -122.407329],[37.763136, -122.407371],
-		  [37.760401, -122.407114],[37.756832, -122.406773],[37.756921, -122.40529]];
+/* Ambulance route data */
 
-var vehicle_marker = L.Marker.movingMarker(longroute,  [15000,15000,15000,15000,15000,15000,15000,15000,15000,15000,
-							15000,15000,15000,15000,15000,15000,15000,15000,15000,15000,
-							15000,15000,15000,15000,15000,15000,15000,15000,15000,15000,
-							15000,15000,15000,15000,15000,15000,15000,15000,15000,15000,
-							15000,15000,15000,15000,15000,15000,15000,15000,15000,15000],
-						       [260,260,350,350,350,350,350,350,350,350,350,350,80,80,80,80,80,
-							80,80,80,80,80,80,80,80,80,80,348,348,348,348,0,50,50,50,50,50,
-							50,50,60,85,85,85,85,85,85,85,85,85,350],
-				{ icon:L.icon({
-					iconUrl:'https://github.com/shyampurk/m2m-traffic-corridor/blob/master/client/SVG/ambulance_car.svg',
-					iconSize: [45,45]})
-					
-				}).addTo(map);
+var ambulance_route = [ [37.784149,-122.439601],[37.784198 ,-122.439605],[37.784774,-122.439724],[37.786182 ,-122.440025],
+			[37.786391 ,-122.438391],[37.786597 ,-122.436742],[37.786775 ,-122.435309],
+			[37.786966 ,-122.433866],[37.787148 ,-122.432434],[37.787335 ,-122.431002],
+			[37.787517 ,-122.429559],[37.787701 ,-122.428124],[37.787886 ,-122.426683],
+			[37.78807 ,-122.425243],[37.787216 ,-122.425074],[37.786377 ,-122.424902],
+			[37.78552 ,-122.424731],[37.784681,-122.424559], [37.783706 ,-122.424361],
+			[37.782728 ,-122.424165],[37.781751 ,-122.423964],[37.780776 ,-122.423771],
+			[37.7798 ,-122.423573],[37.778824 ,-122.423376],[37.777847 ,-122.423179],
+			[37.776871,-122.422982],[37.776511 ,-122.422899],[37.776428 , -122.422907],
+			[37.775949 ,-122.422792],[37.776105 ,-122.421586],[37.77626 ,-122.42038],
+			[37.776417 ,-122.419176],[37.776574 , -122.417972],[37.776532 ,-122.417494],
+			[37.775264 ,-122.415896],[37.773903 ,-122.41419],[37.772656 , -122.412623],
+			[37.77141 , -122.411065],[37.770328,-122.409748],[37.769809,-122.409072],
+			[37.769292,-122.408404],[37.768592,-122.407838],[37.767568,-122.407736],
+			[37.766546 , -122.40764],[37.76552 ,-122.407543],[37.764498, -122.407444],
+			[37.763365, -122.407339],[37.763208, -122.407329],[37.763136, -122.407371],
+			[37.760401, -122.407114],[37.756832, -122.406773],[37.756921, -122.40529]  ];
+
+/*Set ambulance route,speed and angle*/ 
+
+var vehicle_marker = L.Marker.movingMarker(ambulance_route,
+					[ 1000,15000,15000,15000,15000,15000,15000,15000,15000,15000,15000,
+					  15000,15000,15000,15000,15000,15000,15000,15000,15000,15000,
+					  15000,15000,15000,15000,15000,15000,15000,15000,15000,15000,
+					  15000,15000,15000,15000,15000,15000,15000,15000,15000,15000,
+					  15000,15000,15000,15000,15000,15000,15000,15000,15000,15000],
+					[ 260,260,260,350,350,350,350,350,350,350,350,350,350,80,
+					  80,80,80,80,80,80,80,80,80,80,80,80,80,80,348,348,348,348,
+					  0,50,50,50,50,50,50,50,60,85,85,85,85,85,85,85,85,85,350],{
+
+					  icon:L.icon({
+						iconUrl:'file:///C:/Users/Aravind/Downloads/m2m-traffic-corridor-master/m2m-traffic-corridor-master/client/ambulance_car.svg',
+						iconSize: [45,45]})
+						}).addTo(map);
    
-var polyline = L.polyline(longroute).addTo(map);
+var polyline = L.polyline(ambulance_route).addTo(map);
+
+/*Traffic signal icons declaration*/
+
+var green_signalIcon = L.icon({
+	iconUrl:     'file:///C:/Users/Aravind/Downloads/m2m-traffic-corridor-master/m2m-traffic-corridor-master/client/green_signal.svg',
+	iconSize:    [60,50],
+	iconAnchor:  [22,94],
+	popupAnchor: [-3,-76]
+});
+
+var ordinaryflow1 = L.icon({
+       iconUrl:      'file:///C:/Users/Aravind/Downloads/m2m-traffic-corridor-master/m2m-traffic-corridor-master/client/ordinary_flow1.svg',
+       iconSize:     [65, 50], // size of the icon
+       iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+       popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+});
+
+var ordinaryflow2 = L.icon({
+       iconUrl:      'file:///C:/Users/Aravind/Downloads/m2m-traffic-corridor-master/m2m-traffic-corridor-master/client/ordinary_flow2.svg',
+       iconSize:     [65, 50], // size of the icon
+       iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+       popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+});
+var ordinaryflow3 = L.icon({
+       iconUrl:	     'file:///C:/Users/Aravind/Downloads/m2m-traffic-corridor-master/m2m-traffic-corridor-master/client/ordinary_flow3.svg',
+       iconSize:     [65, 50], // size of the icon
+       iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+       popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+});
+
+/*Signal placement on map*/
+
+var signal_1   = L.marker([37.786188,-122.440033], {icon: ordinaryflow1}).addTo(map);
+var signal_2   = L.marker([37.787237,-122.431801], {icon: ordinaryflow2}).addTo(map);
+var signal_3   = L.marker([37.785359,-122.424704], {icon: ordinaryflow2}).addTo(map);
+var signal_4   = L.marker([37.778739,-122.423349], {icon: ordinaryflow3}).addTo(map);
+var signal_5   = L.marker([37.776381,-122.419514], {icon: ordinaryflow1}).addTo(map);
+var signal_6   = L.marker([37.772811,-122.412835], {icon: ordinaryflow3}).addTo(map);
+var signal_7   = L.marker([37.765782,-122.407557], {icon: ordinaryflow1}).addTo(map);
+
+/*Marker movement controls*/
 
 vehicle_marker.once('click', function() {
     vehicle_marker.start();
@@ -93,6 +141,8 @@ vehicle_marker.once('click', function() {
 vehicle_marker.bindPopup('<b>Click me to start !</b>', {closeOnClick: false});
 vehicle_marker.openPopup();
 
+/*Vehicle marker pause event function*/
+
 vehicle_marker.on('pause',function () {
 	console.log("pause fired");
 	if (vehicle_marker.isRunning()) 
@@ -101,6 +151,8 @@ vehicle_marker.on('pause',function () {
 	} 
 });
 
+/*Vehicle marker resume event*/
+
 vehicle_marker.on('resume',function () {
 	console.log("resume fired");
 	if (!vehicle_marker.isRunning()) 
@@ -108,6 +160,8 @@ vehicle_marker.on('resume',function () {
 	   vehicle_marker.resume();
 	} 
 });
+
+/*Distance calculation function*/
 
 function toRad(x) {
    return x * Math.PI / 180;
@@ -132,6 +186,8 @@ function distance(latt,lonn,list1_1,list1_2){
 	return d;
 }
 
+/* Acquiring vehicle marker's lattitude & longitude and publishing to pubnub*/
+
 var st_lat = 37.784774 ; 
 var st_lon = -122.439724;
 var sp_lat,sp_lon;
@@ -146,12 +202,14 @@ vehicle_marker.on('move',function () {
 	console.log(st_lat,st_lon,sp_lat,sp_lon)
 	if (dist >=10 && dist <= 15)
 		{
-			pub(sp_lat,sp_lon);
+			publishing_func(sp_lat,sp_lon);
 			st_lat = sp_lat;
 			st_lon = sp_lon;
 		}
 	control(v_lat,v_lon);
 	coordinates.innerHTML = 'Latitude: ' + m.lat + '<br />Longitude: ' + m.lng;});
+
+/*Control function for traffic signal synchronization */
 
 var di;
 var flag = false;
@@ -174,161 +232,67 @@ function control(latt,lonn){
 	}
 }
 
+var arrayB = [  37.786188,-122.440033,
+	        37.787237,-122.431801,
+		37.785359,-122.424704,
+		37.778739,-122.423349,
+		37.776381,-122.419514,
+		37.772811,-122.412835,
+		37.765782,-122.407557];
+
+var arrayC = [ordinaryflow1,ordinaryflow2,ordinaryflow2,ordinaryflow3,ordinaryflow1,ordinaryflow3,ordinaryflow1];
 var PN = parseInt (0);
 var arrayA = [];
-function check_san(m2){
-	var str = m2[0].toString();
-	var nu = parseInt(m2[1]);
-	if (nu == 1){
-		if (str == "yes")
+
+function check_san(m){
+	var str = m[0].toString();
+	var nu = parseInt(m[1]);
+	console.log(arrayB[0]);
+	
+	if (str == "yes")
 		{
+			console.log(PN);
+			var signal_1   = L.marker([arrayB[2*PN],arrayB[2*PN+1]], {icon: green_signalIcon}).addTo(map);
 			PN =parseInt(PN+1);
 			arrayA.push(str);
-			var Divisadero_st = L.marker([37.786188,-122.440033],{icon:green_signalIcon}).addTo(map);
 			if (flag == true){vehicle_marker.fire('resume');}
 		}
 		else
 		{
-			var Divisadero_st = L.marker([37.786188,-122.440033],{icon:ordinary_flowIcon1}).addTo(map);
-			flag = false;
-		}
-	}if(nu == 2){
-		if(str == "yes")
-		{
-			PN =parseInt(PN+1);
-			arrayA.push(str);
-			var Webster_st = L.marker([37.787237,-122.431801],{icon:green_signalIcon}).addTo(map);
-			if (flag == true){vehicle_marker.fire('resume');}
-		}
-		else
-		{
-			var Webster_st = L.marker([37.787237,-122.431801],{icon:ordinary_flowIcon2}).addTo(map);
-			flag = false;
-		}
-	}if (nu == 3){
-		if (str == "yes")
-		{
-			PN =parseInt(PN+1);
-			arrayA.push(str);
-			var Gough_st = L.marker([37.785359,-122.424704],{icon:green_signalIcon}).addTo(map);
-			if (flag == true){vehicle_marker.fire('resume');}
-		}
-		else
-		{
-			var Gough_st = L.marker([37.785359,-122.424704],{icon:ordinary_flowIcon2}).addTo(map);
-			flag = false;
-		}
-	}if (nu == 4){
-		if (str == "yes")
-		{
-			PN =parseInt(PN+1);
-			arrayA.push(str);
-			var Fulton_st = L.marker([37.778739,-122.423349],{icon:green_signalIcon}).addTo(map);
-			if (flag == true){vehicle_marker.fire('resume');}
-		}
-		else
-		{
-			var Fulton_st = L.marker([37.778739,-122.423349],{icon:ordinary_flowIcon3}).addTo(map);
-			flag = false;
-		}
-	}if (nu == 5){
-		if (str == "yes")
-		{
-			PN =parseInt(PN+1);
-			arrayA.push(str);
-			var Fell_St = L.marker([37.776381,-122.419514],{icon:green_signalIcon}).addTo(map);
-			if (flag == true){vehicle_marker.fire('resume');}
-		}
-		else
-		{
-			var Fell_st = L.marker([37.776381,-122.419514],{icon:ordinary_flowIcon1}).addTo(map);
-			flag = false;
-		}
-	}if (nu == 6){
-		if (str == "yes")
-		{
-			PN =parseInt(PN+1);
-			arrayA.push(str);
-			var Folsom_St = L.marker([37.772811,-122.412835],{icon:green_signalIcon}).addTo(map);
-			if (flag == true){vehicle_marker.fire('resume');}
-		}
-		else
-		{
-			var Folsom_St = L.marker([37.772811,-122.412835],{icon:ordinary_flowIcon3}).addTo(map);
-			flag = false;
-		}
-	}if (nu == 7){
-		if (str == "yes")
-		{
-			PN =parseInt(PN+1);
-			arrayA.push(str);
-			var sixteenth_st = L.marker([37.765782,-122.407557],{icon:green_signalIcon}).addTo(map);
-			if (flag == true){vehicle_marker.fire('resume');}
-		}
-		else
-		{
-			var sixteenth_st = L.marker([37.765782,-122.407557],{icon:ordinary_flowIcon1}).addTo(map);
+			console.log(arrayC[PN-1])
+			console.log(PN)
+			var signal_1  = L.marker([arrayB[(2*PN)-2],arrayB[(2*PN)-1]],{icon:arrayC[PN-1]}).addTo(map);			
 			flag = false;
 		}
 	}
-}
+
+/*Publishing latitude & longitude to server*/
+
 var pubnub = PUBNUB({                          
-		publish_key   : 'your_publish_key',
-		subscribe_key : 'your_subscribe_key'
+			publish_key   : 'your publishing key',		//your pubnub keys here
+			subscribe_key : 'your subscribing key'
 		});
-function pub(latt,lonn){
-		 var lat = latt.substring(0,11);
+function publishing_func(latt,lonn){
+			 var lat = latt.substring(0,11);
 	         var lon = lonn.substring(0,11);
-	
 		pubnub.publish({                                    
-			channel : "pub_channel",
+			channel : "your publishing channel",		//your channel name here
 			message : {lat,lon}
 		})
 	};
 
+/*Subscribing to the server*/
 
-function sub_san(){
+function subscribing_func(){
 	pubnub.subscribe({
-			channel :"sub_channel",
-			message :function (m2){check_san(m2)},
+			channel :"your subscribing channel",		//your subscribing channel here
+			message :function (m){check_san(m)},
 			error : function(error) {
 			console.log(JSON.stringify(error));}
 			})
 		};
-sub_san();
-var green_signalIcon = L.icon({
-	iconUrl:     'https://github.com/shyampurk/m2m-traffic-corridor/blob/master/client/SVG/green_signal.svg',
-	iconSize:    [60,50],
-	iconAnchor:  [22,94],
-	popupAnchor: [-3,-76]});
 
-var ordinary_flowIcon1 = L.icon({
-       iconUrl:      'https://github.com/shyampurk/m2m-traffic-corridor/blob/master/client/SVG/ordinary_flow1.svg',
-       iconSize:     [65, 50], // size of the icon
-       iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-       popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-});
-
-var ordinary_flowIcon2 = L.icon({
-       iconUrl:      'https://github.com/shyampurk/m2m-traffic-corridor/blob/master/client/SVG/ordinary_flow2.svg',
-       iconSize:     [65, 50], // size of the icon
-       iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-       popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-});
-var ordinary_flowIcon3 = L.icon({
-       iconUrl:	     'https://github.com/shyampurk/m2m-traffic-corridor/blob/master/client/SVG/ordinary_flow3.svg',
-       iconSize:     [65, 50], // size of the icon
-       iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-       popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-});
-
-var Divisadero_st = L.marker([37.786188,-122.440033], {icon: sanfrnsIcon}).addTo(map);
-var Webster_st 	  = L.marker([37.787237,-122.431801], {icon: sanfrns1Icon}).addTo(map);
-var Gough_st  	  = L.marker([37.785359,-122.424704], {icon: sanfrns1Icon}).addTo(map);
-var Fulton_st     = L.marker([37.778739,-122.423349], {icon: sanfrns2Icon}).addTo(map);
-var Fell_st   	  = L.marker([37.776381,-122.419514], {icon: sanfrnsIcon}).addTo(map);
-var Folsom_St     = L.marker([37.772811,-122.412835], {icon: sanfrns2Icon}).addTo(map);
-var sixteenth_st  = L.marker([37.765782,-122.407557], {icon: sanfrnsIcon}).addTo(map);
+subscribing_func();
 
 </script>
 </body>
