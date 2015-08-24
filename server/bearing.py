@@ -1,13 +1,13 @@
 #!/usr/bin/python
 '''
 /***************************************************************************************
-Name 			    :  bearng 
+Name 		:  bearng 
 Description 	:  calculates the bearing(angle) between given two lattitude and 
-			   	       longitude points 
-Parameters  	:  lat and lng are point one lattitude and longitude respectively 
-			   	       lt and ln are point two lattitude and longitude respectively
-Return 			  :  This function will return the bearing(angle) between given two 
-			           lattitude and longitude points 
+		   longitude points 
+Parameters  	:  l_lat1 and l_lng1 are point one lattitude and longitude respectively 
+		   l_lat2 and l_lng2 are point two lattitude and longitude respectively
+Return 		:  This function will return the bearing(angle) between given two 
+		   lattitude and longitude points 
 ****************************************************************************************/
 '''
 import math
