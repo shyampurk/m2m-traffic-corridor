@@ -57,14 +57,7 @@
        id="red-id"
        transform="translate(-41.436462,674.29301)"
        inkscape:label="red-label">
-      <rect
-         ry="0"
-         y="70.219322"
-         x="41.428589"
-         height="307.85718"
-         width="245"
-         id="rect3022"
-         style="fill:#cccccc;fill-opacity:1;stroke:none" />
+     
       <rect
          ry="23.582197"
          y="93.790779"
@@ -116,14 +109,7 @@
        id="orange-id"
        transform="translate(-294.29361,674.29301)"
        inkscape:label="orange-label">
-      <rect
-         ry="0"
-         y="70.219322"
-         x="294.28574"
-         height="307.85718"
-         width="245"
-         id="rect3022-7"
-         style="fill:#cccccc;fill-opacity:1;stroke:none" />
+      
       <rect
          ry="23.582197"
          y="93.790779"
@@ -175,14 +161,7 @@
        id="green-id"
        transform="translate(-547.50787,673.93588)"
        inkscape:label="green-label">
-      <rect
-         ry="0"
-         y="70.576454"
-         x="547.5"
-         height="307.85718"
-         width="245"
-         id="rect3022-7-8"
-         style="fill:#cccccc;fill-opacity:1;stroke:none" />
+      
       <rect
          ry="23.582197"
          y="94.147903"
