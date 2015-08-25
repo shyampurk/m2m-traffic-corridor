@@ -45,7 +45,8 @@ var map = L.mapbox.map('map', 'aravindc.mln6j3bd',{
 
 /* Ambulance route data */
 
-var ambulance_route = [ [37.784149,-122.439601],[37.784198 ,-122.439605],[37.784774,-122.439724],[37.786182 ,-122.440025],
+var ambulance_route = [ [37.784149,-122.439601],[37.784409 ,-122.439665],[37.784683,-122.439711],
+			[37.784774,-122.439724],[37.786182 ,-122.440025],
 			[37.786391 ,-122.438391],[37.786597 ,-122.436742],[37.786775 ,-122.435309],
 			[37.786966 ,-122.433866],[37.787148 ,-122.432434],[37.787335 ,-122.431002],
 			[37.787517 ,-122.429559],[37.787701 ,-122.428124],[37.787886 ,-122.426683],
@@ -66,12 +67,12 @@ var ambulance_route = [ [37.784149,-122.439601],[37.784198 ,-122.439605],[37.784
 /*Set ambulance route,speed and angle*/ 
 
 var vehicle_marker = L.Marker.movingMarker(ambulance_route,
-					[ 1000,15000,15000,15000,15000,15000,15000,15000,15000,15000,15000,
-					  15000,15000,15000,15000,15000,15000,15000,15000,15000,15000,
-					  15000,15000,15000,15000,15000,15000,15000,15000,15000,15000,
-					  15000,15000,15000,15000,15000,15000,15000,15000,15000,15000,
-					  15000,15000,15000,15000,15000,15000,15000,15000,15000,15000],
-					[ 260,260,260,350,350,350,350,350,350,350,350,350,350,80,
+					[ 1000,1000,1000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,
+					  10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,
+					  10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,
+					  10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,
+					  10000,10000,10000,10000,10000,10000,10000,10000,10000,10000],
+					[ 260,260,260,260,260,350,350,350,350,350,350,350,350,350,350,80,
 					  80,80,80,80,80,80,80,80,80,80,80,80,80,80,348,348,348,348,
 					  0,50,50,50,50,50,50,50,60,85,85,85,85,85,85,85,85,85,350],{
 
@@ -86,7 +87,14 @@ var polyline = L.polyline(ambulance_route).addTo(map);
 
 var green_signalIcon = L.icon({
 	iconUrl:     'file:///C:/Users/Aravind/Downloads/m2m-traffic-corridor-master/m2m-traffic-corridor-master/client/green_signal.svg',
-	iconSize:    [60,50],
+	iconSize:    [65,50],
+	iconAnchor:  [22,94],
+	popupAnchor: [-3,-76]
+});
+
+var red_signalIcon = L.icon({
+	iconUrl:     'file:///C:/Users/Aravind/Downloads/m2m-traffic-corridor-master/m2m-traffic-corridor-master/client/green_signal.svg',
+	iconSize:    [65,50],
 	iconAnchor:  [22,94],
 	popupAnchor: [-3,-76]
 });
@@ -125,6 +133,7 @@ var signal_7   = L.marker([37.765782,-122.407557], {icon: ordinaryflow1}).addTo(
 
 vehicle_marker.once('click', function() {
     vehicle_marker.start();
+    pubnub.publish({channel : "your publishing channel",message : "start"});
     vehicle_marker.closePopup();
     vehicle_marker.unbindPopup();
     vehicle_marker.on('click', function() {
@@ -206,7 +215,8 @@ vehicle_marker.on('move',function () {
 			st_lat = sp_lat;
 			st_lon = sp_lon;
 		}
-	control(v_lat,v_lon);
+	stop (v_lat,v_lon);
+	control (v_lat,v_lon);
 	coordinates.innerHTML = 'Latitude: ' + m.lat + '<br />Longitude: ' + m.lng;});
 
 /*Control function for traffic signal synchronization */
@@ -225,7 +235,7 @@ function control(latt,lonn){
 	di =  distance(latt,lonn,list[2*PN],list[(2*PN)+1]);
 	
 	if (flag == false){
-		if(typeof(arrayA[PN]) === 'undefined' && di<160) {
+		if(typeof(arrayA[PN]) === 'undefined' && di<70) {
 			vehicle_marker.fire('pause');
 			flag = true;
 		}
@@ -247,11 +257,14 @@ var arrayA = [];
 function check_san(m){
 	var str = m[0].toString();
 	var nu = parseInt(m[1]);
-	console.log(arrayB[0]);
 	
-	if (str == "yes")
+	if(str == "red")
+	{
+		var signal_1 = L.marker([arrayB[2*PN],arrayB[2*PN+1]],{icon: red_signalIcon}).addTo(map);
+	}
+	
+	if (str == "green")
 		{
-			console.log(PN);
 			var signal_1   = L.marker([arrayB[2*PN],arrayB[2*PN+1]], {icon: green_signalIcon}).addTo(map);
 			PN =parseInt(PN+1);
 			arrayA.push(str);
@@ -274,7 +287,7 @@ var pubnub = PUBNUB({
 		});
 function publishing_func(latt,lonn){
 			 var lat = latt.substring(0,11);
-	         var lon = lonn.substring(0,11);
+	        	 var lon = lonn.substring(0,11);
 		pubnub.publish({                                    
 			channel : "your publishing channel",		//your channel name here
 			message : {lat,lon}
@@ -294,6 +307,15 @@ function subscribing_func(){
 
 subscribing_func();
 
+function stop (lat,lon)
+{
+	 dis = distance(37.756809,-122.406781,lat,lon);
+	 if (dis <= 5){
+		  pubnub.publish({
+		  	channel : "your publishing channel",
+		  	message : "stop"});
+	 }
+}
 </script>
 </body>
 </html>
