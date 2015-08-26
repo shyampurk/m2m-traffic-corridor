@@ -199,22 +199,25 @@ function distance(latt,lonn,list1_1,list1_2){
 
 var st_lat = 37.784774 ; 
 var st_lon = -122.439724;
-var sp_lat,sp_lon;
+
 
 vehicle_marker.on('move',function () {
 	var m = vehicle_marker.getLatLng();
 	var v_lat = m.lat.toString();
 	var v_lon = m.lng.toString();
-	sp_lat = v_lat;
-	sp_lon = v_lon;
-	dist = distance(st_lat,st_lon,sp_lat,sp_lon);
-	console.log(st_lat,st_lon,sp_lat,sp_lon)
-	if (dist >=10 && dist <= 15)
+	
+	dist = distance(st_lat,st_lon,v_lat,v_lon);
+	//console.log(st_lat,st_lon,v_lat,v_lon)
+	if (dist >= 10 && dist <= 15)
 		{
-			publishing_func(sp_lat,sp_lon);
-			st_lat = sp_lat;
-			st_lon = sp_lon;
+			publishing_func(v_lat,v_lon);
+			st_lat = v_lat;
+			st_lon = v_lon;
 		}
+	else{
+		st_lat = v_lat;
+		st_lon = v_lon;
+	}
 	stop (v_lat,v_lon);
 	control (v_lat,v_lon);
 	coordinates.innerHTML = 'Latitude: ' + m.lat + '<br />Longitude: ' + m.lng;});
