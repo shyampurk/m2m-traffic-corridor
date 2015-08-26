@@ -273,10 +273,10 @@ function check_san(m){
 			arrayA.push(str);
 			if (flag == true){vehicle_marker.fire('resume');}
 		}
-		else
+	if(str == "withdraw")
 		{
-			console.log(arrayC[PN-1])
-			console.log(PN)
+			//console.log(arrayC[PN-1])
+			//console.log(PN)
 			var signal_1  = L.marker([arrayB[(2*PN)-2],arrayB[(2*PN)-1]],{icon:arrayC[PN-1]}).addTo(map);			
 			flag = false;
 		}
@@ -313,7 +313,7 @@ subscribing_func();
 function stop (lat,lon)
 {
 	 dis = distance(37.756809,-122.406781,lat,lon);
-	 if (dis <= 5){
+	 if (dis <= 50){
 		  pubnub.publish({
 		  	channel : "your publishing channel",
 		  	message : "stop"});
