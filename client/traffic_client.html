@@ -133,7 +133,7 @@ var signal_7   = L.marker([37.765782,-122.407557], {icon: ordinaryflow1}).addTo(
 
 vehicle_marker.once('click', function() {
     vehicle_marker.start();
-    pubnub.publish({channel : "your publishing channel",message : "start"});
+    pubnub.publish({channel : "pub_channel",message : "start"});
     vehicle_marker.closePopup();
     vehicle_marker.unbindPopup();
     vehicle_marker.on('click', function() {
@@ -285,14 +285,14 @@ function check_san(m){
 /*Publishing latitude & longitude to server*/
 
 var pubnub = PUBNUB({                          
-			publish_key   : 'your publishing key',		//your pubnub keys here
-			subscribe_key : 'your subscribing key'
+			publish_key   : 'demo',		//your pubnub keys here
+			subscribe_key : 'demo'
 		});
 function publishing_func(latt,lonn){
 			 var lat = latt.substring(0,11);
 	        	 var lon = lonn.substring(0,11);
 		pubnub.publish({                                    
-			channel : "your publishing channel",		//your channel name here
+			channel : "pub_channel",		//your publishing channel name here
 			message : {lat,lon}
 		})
 	};
@@ -301,7 +301,7 @@ function publishing_func(latt,lonn){
 
 function subscribing_func(){
 	pubnub.subscribe({
-			channel :"your subscribing channel",		//your subscribing channel here
+			channel :"sub_channel",		//your subscribing channel name here
 			message :function (m){check_san(m)},
 			error : function(error) {
 			console.log(JSON.stringify(error));}
@@ -315,7 +315,7 @@ function stop (lat,lon)
 	 dis = distance(37.756809,-122.406781,lat,lon);
 	 if (dis <= 50){
 		  pubnub.publish({
-		  	channel : "your publishing channel",
+		  	channel : "pub_channel",
 		  	message : "stop"});
 	 }
 }
