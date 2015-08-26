@@ -77,8 +77,8 @@ var vehicle_marker = L.Marker.movingMarker(ambulance_route,
 					  0,50,50,50,50,50,50,50,60,85,85,85,85,85,85,85,85,85,350],{
 
 					  icon:L.icon({
-						iconUrl:'file:///C:/Users/Aravind/Downloads/m2m-traffic-corridor-master/m2m-traffic-corridor-master/client/ambulance_car.svg',
-						iconSize: [45,45]})
+						iconUrl:'./SVG/ambulance_car.svg',
+						iconSize: [45,45]}) 
 						}).addTo(map);
    
 var polyline = L.polyline(ambulance_route).addTo(map);
@@ -86,34 +86,34 @@ var polyline = L.polyline(ambulance_route).addTo(map);
 /*Traffic signal icons declaration*/
 
 var green_signalIcon = L.icon({
-	iconUrl:     'file:///C:/Users/Aravind/Downloads/m2m-traffic-corridor-master/m2m-traffic-corridor-master/client/green_signal.svg',
-	iconSize:    [65,50],
-	iconAnchor:  [22,94],
-	popupAnchor: [-3,-76]
+	iconUrl:     './SVG/green_signal.svg',
+	iconSize:    [65,50], // size of the icon
+	iconAnchor:  [22,94], // point of the icon which will correspond to marker's location
+	popupAnchor: [-3,-76] // point from which the popup should open relative to the iconAnchor
 });
 
 var red_signalIcon = L.icon({
-	iconUrl:     'file:///C:/Users/Aravind/Downloads/m2m-traffic-corridor-master/m2m-traffic-corridor-master/client/green_signal.svg',
-	iconSize:    [65,50],
-	iconAnchor:  [22,94],
-	popupAnchor: [-3,-76]
+	iconUrl:     './SVG/red_signalIcon.svg',
+	iconSize:    [65,50], // size of the icon
+	iconAnchor:  [22,94], // point of the icon which will correspond to marker's location
+	popupAnchor: [-3,-76] // point from which the popup should open relative to the iconAnchor
 });
 
 var ordinaryflow1 = L.icon({
-       iconUrl:      'file:///C:/Users/Aravind/Downloads/m2m-traffic-corridor-master/m2m-traffic-corridor-master/client/ordinary_flow1.svg',
+       iconUrl:      './SVG/ordinary_flow1.svg',
        iconSize:     [65, 50], // size of the icon
        iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
        popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
 });
 
 var ordinaryflow2 = L.icon({
-       iconUrl:      'file:///C:/Users/Aravind/Downloads/m2m-traffic-corridor-master/m2m-traffic-corridor-master/client/ordinary_flow2.svg',
+       iconUrl:      './SVG/ordinary_flow2.svg',
        iconSize:     [65, 50], // size of the icon
        iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
        popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
 });
 var ordinaryflow3 = L.icon({
-       iconUrl:	     'file:///C:/Users/Aravind/Downloads/m2m-traffic-corridor-master/m2m-traffic-corridor-master/client/ordinary_flow3.svg',
+       iconUrl:	     './SVG/ordinary_flow3.svg',
        iconSize:     [65, 50], // size of the icon
        iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
        popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
@@ -197,9 +197,10 @@ function distance(latt,lonn,list1_1,list1_2){
 
 /* Acquiring vehicle marker's lattitude & longitude and publishing to pubnub*/
 
-var st_lat = 37.784774 ; 
-var st_lon = -122.439724;
-
+//var st_lat = 37.784774 ; 
+//var st_lon = -122.439724;
+  var st_lat = 37.784149 ;
+  var st_lon = -122.439601 ;
 
 vehicle_marker.on('move',function () {
 	var m = vehicle_marker.getLatLng();
@@ -214,10 +215,7 @@ vehicle_marker.on('move',function () {
 			st_lat = v_lat;
 			st_lon = v_lon;
 		}
-/*	else{
-		st_lat = v_lat;
-		st_lon = v_lon;
-	}*/
+
 	stop (v_lat,v_lon);
 	control (v_lat,v_lon);
 	coordinates.innerHTML = 'Latitude: ' + m.lat + '<br />Longitude: ' + m.lng;});
@@ -285,8 +283,8 @@ function check_san(m){
 /*Publishing latitude & longitude to server*/
 
 var pubnub = PUBNUB({                          
-			publish_key   : 'demo',		//your pubnub keys here
-			subscribe_key : 'demo'
+			publish_key   : 'your publish key',		//your pubnub keys here
+			subscribe_key : 'your subscribe key'
 		});
 function publishing_func(latt,lonn){
 			 var lat = latt.substring(0,11);
@@ -301,7 +299,7 @@ function publishing_func(latt,lonn){
 
 function subscribing_func(){
 	pubnub.subscribe({
-			channel :"sub_channel",		//your subscribing channel name here
+			channel :"sub_channel",			//your subscribing channel name here
 			message :function (m){check_san(m)},
 			error : function(error) {
 			console.log(JSON.stringify(error));}
