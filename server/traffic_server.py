@@ -9,8 +9,8 @@ import time
 import bearing
 import random
 
-pubnub = Pubnub(publish_key="demo",       # publish and subscribe keys
-		subscribe_key="demo")   
+pubnub = Pubnub(publish_key="your publish key",       # publish and subscribe keys
+		subscribe_key="your subscribe key")   
 g_NAS = int(1)  	# Next Approaching Signal 
 g_PASA =str('167')      # Present Approaching Signal Angle
 g_cmd = True		# Command flag
@@ -18,21 +18,22 @@ g_count = int(0)	# count variable
 g_ran1 = random.randrange(2,4,1)
 g_ran2 = random.randrange(5,7,1)
 g_flag  = True
+g_cnt  = 0
 def main_function(lat,lng):
-  	global g_flag,g_PASA,g_NAS,g_count,g_ran1,g_ran2,g_cmd
+  	global g_flag,g_PASA,g_NAS,g_count,g_ran1,g_uran2,g_cmd
 	
 	l_list1 = ["37.786188 -122.440033","37.787237 -122.431801","37.785359 -122.424704","37.778739 -122.423349","37.776381 -122.419514","37.772811 -122.412835",
 		   "37.765782 -122.407557","37.756809 -122.406781","37.756930 -122.405238"]
 	l_signal = ["Divisaderostreet","Websterstreet","Goughstreet","Fultonstreet","Fellstreet","FolsomStreet","sixteenthstreet"]
 	if (g_flag == False):
-		g_NAS = int(1)  	# Next Approaching Signal 
+		g_NAS  = int(1)  	# Next Approaching Signal 
 		g_PASA =str('167')      # Present Approaching Signal Angle
-		g_cmd = True		# Command flag
-		g_count = int(0)	# count variable
+		g_cmd  = True		# Command flag
+		g_count= int(0)	# count variable
 		g_ran1 = random.randrange(2,4,1)
 		g_ran2 = random.randrange(5,7,1)
-		g_flag  = True
-		
+		g_flag = True
+		g_cnt  = 0	
 	p_lat1 = float(lat)
 	p_lng1 = float(lng)
 	
@@ -76,14 +77,15 @@ def main_function(lat,lng):
 				g_cmd = False
 		
 def callback(message,channel):
-	global g_flag
+	global g_flag,g_cnt
 	if (message == "start"):
 		g_flag = False
 		print "connection established between ambulance and the server\n"
 		time.sleep(1)
 		print "Ambulance started from UCSF Medical Center at Mount Zion\n"
-	elif(message == "stop"):
+	elif(message == "stop" and g_cnt == 0):
 		print "Ambulance reached the SF General Hospital"
+		g_cnt = g_cnt+1
 	else:
 		lat = message['lat']
 		lng = message['lon']
