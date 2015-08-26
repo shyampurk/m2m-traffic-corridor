@@ -53,7 +53,7 @@ def main_function(lat,lng):
 				print "server sent a command to %s signal to set ordinary flow \n"%(l_signal[g_NAS-1])
 				print "Ambulance crossed %s signal \n" %(l_signal[g_NAS-1])  
 				if (g_NAS<=6):
-					print "Ambulance is approaching %s signal next \n" %(l_signal[g_NAS])      
+					print "Ambulance is approaching %s signal \n" %(l_signal[g_NAS])      
 				g_NAS = int(g_NAS+1)
 				g_cmd = True
 		
@@ -63,10 +63,10 @@ def main_function(lat,lng):
 				if(g_NAS == g_ran1 or g_NAS == g_ran2):
 					if (g_count <= 2):
 						pubnub.publish(channel='pub_channel' ,message =("red",g_NAS))
-						time.sleep(17)
+						time.sleep(15)
 						print "Ambulance halted, at %s after seeing RED signal \n"%(l_signal[g_NAS-1])
 						g_count = int(g_count +1)
-						time.sleep(4)
+						time.sleep(3)
 						print "Ambulance resumed its journey from %s after seeing GREEN signal\n"%(l_signal[g_NAS-1])
 				pubnub.publish(channel='pub_channel' ,message =("green",g_NAS))
 				print "server sent a command to %s signal to set GREEN \n"%(l_signal[g_NAS-1])
@@ -83,7 +83,7 @@ def callback(message,channel):
 		time.sleep(1)
 		print "Ambulance started from UCSF Medical Center at Mount Zion\n"
 	elif(message == "stop"):
-		print "Ambulance reached the Hospital"
+		print "Ambulance reached the SF General Hospital"
 	else:
 		lat = message['lat']
 		lng = message['lon']
