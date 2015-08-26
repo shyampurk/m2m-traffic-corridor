@@ -49,7 +49,7 @@ def main_function(lat,lng):
 	
 		if((g_PASA[0]) != (l_brng2[0])):                                
 			if (g_cmd == False): 
-				pubnub.publish(channel ='pub_channel' ,message = ("withdraw",g_NAS))
+				pubnub.publish(channel ='sub_channel' ,message = ("withdraw",g_NAS))
 				print "server sent a command to %s signal to set ordinary flow \n"%(l_signal[g_NAS-1])
 				print "Ambulance crossed %s signal \n" %(l_signal[g_NAS-1])  
 				if (g_NAS<=6):
@@ -62,13 +62,13 @@ def main_function(lat,lng):
 				print "Ambulance is %d meter away from %s signal \n" %(l_distance,l_signal[g_NAS-1])
 				if(g_NAS == g_ran1 or g_NAS == g_ran2):
 					if (g_count <= 2):
-						pubnub.publish(channel='pub_channel' ,message =("red",g_NAS))
+						pubnub.publish(channel='sub_channel' ,message =("red",g_NAS))
 						time.sleep(15)
 						print "Ambulance halted, at %s after seeing RED signal \n"%(l_signal[g_NAS-1])
 						g_count = int(g_count +1)
 						time.sleep(3)
 						print "Ambulance resumed its journey from %s after seeing GREEN signal\n"%(l_signal[g_NAS-1])
-				pubnub.publish(channel='pub_channel' ,message =("green",g_NAS))
+				pubnub.publish(channel='sub_channel' ,message =("green",g_NAS))
 				print "server sent a command to %s signal to set GREEN \n"%(l_signal[g_NAS-1])
 				time.sleep(1)
 				print "%s signal changed to green \n" %(l_signal[g_NAS-1]) 				
@@ -102,5 +102,5 @@ def reconnect(message):
 def disconnect(message):
     print("DISCONNECTED")
 
-pubnub.subscribe(channels='sub_channel', callback=callback, error=callback,
+pubnub.subscribe(channels='pub_channel', callback=callback, error=callback,
                  connect=connect, reconnect=reconnect, disconnect=disconnect)
