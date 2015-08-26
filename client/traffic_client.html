@@ -214,10 +214,10 @@ vehicle_marker.on('move',function () {
 			st_lat = v_lat;
 			st_lon = v_lon;
 		}
-	else{
+/*	else{
 		st_lat = v_lat;
 		st_lon = v_lon;
-	}
+	}*/
 	stop (v_lat,v_lon);
 	control (v_lat,v_lon);
 	coordinates.innerHTML = 'Latitude: ' + m.lat + '<br />Longitude: ' + m.lng;});
