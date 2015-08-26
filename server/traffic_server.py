@@ -9,8 +9,8 @@ import time
 import bearing
 import random
 
-pubnub = Pubnub(publish_key="your-publish-key",       # publish and subscribe keys
-		subscribe_key="your-subscribe-key")   
+pubnub = Pubnub(publish_key="demo",       # publish and subscribe keys
+		subscribe_key="demo")   
 g_NAS = int(1)  	# Next Approaching Signal 
 g_PASA =str('167')      # Present Approaching Signal Angle
 g_cmd = True		# Command flag
