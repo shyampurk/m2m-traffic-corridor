@@ -307,14 +307,15 @@ function subscribing_func(){
 		};
 
 subscribing_func();
-
+var cnt = 0;
 function stop (lat,lon)
 {
 	 dis = distance(37.756809,-122.406781,lat,lon);
-	 if (dis <= 50){
+	 if (dis <= 50 && cnt == 0){
 		  pubnub.publish({
 		  	channel : "pub_channel",
 		  	message : "stop"});
+		  	cnt = cnt+1;
 	 }
 }
 </script>
