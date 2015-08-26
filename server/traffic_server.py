@@ -20,7 +20,7 @@ g_ran2 = random.randrange(5,7,1)
 g_flag  = True
 g_cnt  = 0
 def main_function(lat,lng):
-  	global g_flag,g_PASA,g_NAS,g_count,g_ran1,g_uran2,g_cmd
+  	global g_flag,g_PASA,g_NAS,g_count,g_ran1,g_ran2,g_cmd
 	
 	l_list1 = ["37.786188 -122.440033","37.787237 -122.431801","37.785359 -122.424704","37.778739 -122.423349","37.776381 -122.419514","37.772811 -122.412835",
 		   "37.765782 -122.407557","37.756809 -122.406781","37.756930 -122.405238"]
