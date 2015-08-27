@@ -18,7 +18,7 @@ g_count = int(0)	# count variable
 g_ran1 = random.randrange(2,4,1)
 g_ran2 = random.randrange(5,7,1)
 g_flag  = True
-g_cnt  = 0
+
 def main_function(lat,lng):
   	global g_flag,g_PASA,g_NAS,g_count,g_ran1,g_ran2,g_cmd
 	
@@ -33,7 +33,7 @@ def main_function(lat,lng):
 		g_ran1 = random.randrange(2,4,1)
 		g_ran2 = random.randrange(5,7,1)
 		g_flag = True
-		g_cnt  = 0	
+			
 	p_lat1 = float(lat)
 	p_lng1 = float(lng)
 	
@@ -77,15 +77,15 @@ def main_function(lat,lng):
 				g_cmd = False
 		
 def callback(message,channel):
-	global g_flag,g_cnt
+	global g_flag
 	if (message == "start"):
 		g_flag = False
 		print "connection established between ambulance and the server\n"
 		time.sleep(1)
 		print "Ambulance started from UCSF Medical Center at Mount Zion\n"
-	elif(message == "stop" and g_cnt == 0):
+	elif(message == "stop"):
 		print "Ambulance reached the SF General Hospital"
-		g_cnt = g_cnt+1
+		
 	else:
 		lat = message['lat']
 		lng = message['lon']
