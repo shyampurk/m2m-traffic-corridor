@@ -1,6 +1,6 @@
 
 #*****************************************************************************************
-#							M2M TRAFFIC CORRIDOR FOR EMERGENCY
+#			M2M TRAFFIC CORRIDOR FOR EMERGENCY
 #*****************************************************************************************
 
 #!usr/bin/python
@@ -13,13 +13,13 @@ from traffic_calc.bearing import bearng
 import math
 import time
 import random
-													# publish and subscribe keys
+					# publish and subscribe keys
 pubnub = Pubnub(publish_key="demo",       
 				subscribe_key="demo")   
-g_NAS = int(1)  					# Next Approaching Signal 
+g_NAS = int(1)  		# Next Approaching Signal 
 g_PASA =str('167')      	# Present Approaching Signal Angle
 g_approachingFlag = True	# status flag 
-g_count = int(0)					# count variable
+g_count = int(0)		# count variable
 g_random1 = random.randrange(2,4,1)	#random number generation
 g_random2 = random.randrange(5,7,1)	#random number generation
 g_flag  = True	#status flag
