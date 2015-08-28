@@ -1,0 +1,386 @@
+<!--********************************************************************************************
+						       M2M TRAFFIC CORRIDOR FOR EMERGENCY
+**********************************************************************************************-->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>Real-Time Traffic Corridor for Emergency Vehicle (SanFrancisco)</title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.css' rel='stylesheet' />
+<script type="text/javascript" src="moving_marker_with_rotation.js"></script>
+<script src=http://cdn.pubnub.com/pubnub-3.7.12.min.js></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<style>
+   body { margin:0;padding:0;}
+   #map { position:absolute; top:0; bottom:0; width:100%; }
+</style>
+</head>
+
+<body>
+
+<pre id='coordinates' class='ui-coordinates'></pre>
+<div id='map'></div>
+
+<style>
+pre.ui-coordinates {
+  position:absolute;
+  bottom:10px;
+  left:10px;
+  padding:5px 10px;
+  background:rgba(0,0,0,0.5);
+  color:#fff;
+  font-size:11px;
+  line-height:18px;
+  border-radius:3px;
+  }
+</style>
+
+<script>
+// A $( document ).ready() block.
+$( document ).ready(function() {
+    
+/*your mapbox access token and map id*/
+L.mapbox.accessToken = 'pk.eyJ1IjoiYXJhdmluZGMiLCJhIjoiOTBhNDM0ZWNmYTc3MDYzMjA0MjBmY2E5NGU3YmQ0MDYifQ.5s9Z-KPF9yvgT05nO12HOQ';
+var map = L.mapbox.map('map', 'aravindc.mln6j3bd',{
+    // the options here prevent mouse wheel or trackpad scrolling
+    // and restrict the zooms to zoom levels 10 through 18
+    scrollWheelZoom: true,
+    maxZoom: 18,
+    minZoom: 10
+}).setView([37.7813,-122.4198], 16);
+
+/* Ambulance route data */
+var ambulance_route = [ [37.784149,-122.439601],[37.784409 ,-122.439665],[37.784683,-122.439711],
+						            [37.784774,-122.439724],[37.786182 ,-122.440025],
+					            	[37.786391 ,-122.438391],[37.786597 ,-122.436742],[37.786775 ,-122.435309],
+					            	[37.786966 ,-122.433866],[37.787148 ,-122.432434],[37.787335 ,-122.431002],
+					             	[37.787517 ,-122.429559],[37.787701 ,-122.428124],[37.787886 ,-122.426683],
+					            	[37.78807 ,-122.425243],[37.787216 ,-122.425074],[37.786377 ,-122.424902],
+					            	[37.78552 ,-122.424731],[37.784681,-122.424559], [37.783706 ,-122.424361],
+						            [37.782728 ,-122.424165],[37.781751 ,-122.423964],[37.780776 ,-122.423771],
+						            [37.7798 ,-122.423573],[37.778824 ,-122.423376],[37.777847 ,-122.423179],
+						            [37.776871,-122.422982],[37.776511 ,-122.422899],[37.776428 , -122.422907],
+						            [37.775949 ,-122.422792],[37.776105 ,-122.421586],[37.77626 ,-122.42038],
+						            [37.776417 ,-122.419176],[37.776574 , -122.417972],[37.776532 ,-122.417494],
+						            [37.775264 ,-122.415896],[37.773903 ,-122.41419],[37.772656 , -122.412623],
+						            [37.77141 , -122.411065],[37.770328,-122.409748],[37.769809,-122.409072],
+						            [37.769292,-122.408404],[37.768592,-122.407838],[37.767568,-122.407736],
+						            [37.766546 , -122.40764],[37.76552 ,-122.407543],[37.764498, -122.407444],
+						            [37.763365, -122.407339],[37.763208, -122.407329],[37.763136, -122.407371],
+						            [37.760401, -122.407114],[37.756832, -122.406773],[37.756921, -122.40529]  ];
+
+/*Set ambulance route,speed ,angle and add marker icon to map*/ 
+
+var vehicle_marker = L.Marker.movingMarker(ambulance_route,
+						[ 
+							1000,1000,1000,10000,10000,10000,10000,10000,10000,10000,
+						  10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,
+					 	  10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,
+					  	10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,
+					  	10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,
+					  	10000,10000,10000,
+					  	],
+						[ 
+							260,260,260,260,350,350,350,350,350,350,350,350,350,350,80,
+					 	    80,80,80,80,80,80,80,80,80,80,80,80,80,80,348,348,348,348,
+					 	    0,50,50,50,50,50,50,50,60,85,85,85,85,85,85,85,85,85,350
+					 	],{
+					 		 icon:L.icon({
+						 		iconUrl:'./SVG/ambulance_car.svg',
+								iconSize: [45,45]
+							}) 
+				}).addTo(map);
+   
+var polyline = L.polyline(ambulance_route).addTo(map);
+
+
+var count = 0;									      	// count value to send the stop message only once 
+var start_point_lat = 37.784149 ;					
+var start_point_lon = -122.439601 ;					
+var vehicle_distance_coord;							// vehicle distance for coordination eye				
+var flag = false;					 	
+
+//Traffic Signal Lattitude and Longitude list
+var trsig_ltln = [  37.786188,-122.440033,		
+	        						37.787237,-122.431801,
+									37.785359,-122.424704,
+									37.778739,-122.423349,	// signal positions
+									37.776381,-122.419514,
+									37.772811,-122.412835,
+									37.765782,-122.407557
+			 					 ];
+
+
+var crdeye_num = parseInt (0);
+var crdeye_chekarray = [];
+var pubnub = PUBNUB({                          
+			publish_key   : 'demo',	//your pubnub keys here
+			subscribe_key : 'demo'
+		});
+
+
+//Marker movement controls
+var is_started = false;
+
+vehicle_marker.once('click', function() 
+{
+    vehicle_marker.start();									          // Ambulance start moving once the icon is clicked
+    pubnub.publish({channel : "pub_channel",message : "start"}); // Publish start message to server 
+    vehicle_marker.closePopup();
+    vehicle_marker.unbindPopup();
+    vehicle_marker.on('click', function()        
+    {
+        if(!is_started){
+        
+            if (!vehicle_marker.isRunning()) 
+            {
+                vehicle_marker.resume(); 
+      }
+            is_started = true;
+        }
+        
+    });
+});
+
+vehicle_marker.bindPopup('<b>Click me to start !!!</b>', {closeOnClick: false});
+vehicle_marker.openPopup();
+
+/*Vehicle marker pause event function*/
+
+vehicle_marker.on('pause',function () 
+{
+	console.log("pause fired");
+	if (vehicle_marker.isRunning()) 
+	{
+	   vehicle_marker.pause();
+	} 
+});
+
+/*Vehicle marker resume event*/
+
+vehicle_marker.on('resume',function ()
+{
+	console.log("resume fired");
+	if (!vehicle_marker.isRunning()) 
+	{
+	   vehicle_marker.resume();
+	} 
+});
+
+/* Acquiring vehicle marker's latitude & longitude and publishing to pubnub*/
+
+vehicle_marker.on('move',function () 
+{
+	var m = vehicle_marker.getLatLng(); 					  	// Gets ambulance marker's current latitude and longitude
+	var vehicle_lat = m.lat.toString();
+	var vehicle_lon = m.lng.toString();
+	
+	vehicle_dist = distance_func(start_point_lat,start_point_lon,
+									vehicle_lat,vehicle_lon);       	// Distance calculation for data transmission at each 10m  
+	
+	if (vehicle_dist>=10)
+		{	
+			
+			publishing_func(vehicle_lat,vehicle_lon);			// Publishes current co-ordinates to server for every 10 meter
+			start_point_lat = vehicle_lat;					     	// Updates the start position with current vehicle's lat,lon
+			start_point_lon = vehicle_lon;
+		}
+
+	vehicle_stop_func (vehicle_lat,vehicle_lon);
+	coordination_eye_func (vehicle_lat,vehicle_lon);
+	coordinates.innerHTML = 'Latitude: ' + m.lat + '<br />Longitude: ' + m.lng;
+});
+
+
+/*Traffic signal icons declaration*/
+
+/*green signal icon*/
+
+var green_signalIcon = L.icon({
+	iconUrl:     './SVG/green_signal.svg',
+	iconSize:    [65,50], // size of the icon
+	iconAnchor:  [22,94], // point of the icon which will correspond to marker's location
+	popupAnchor: [-3,-76] // point from which the popup should open relative to the iconAnchor
+});
+
+/*red signal icon*/
+
+var red_signalIcon = L.icon({
+	iconUrl:     './SVG/red_signalIcon.svg',
+	iconSize:    [65,50], 
+	iconAnchor:  [22,94], 
+	popupAnchor: [-3,-76] 
+});
+
+/*traffic signal normal flow 1*/
+
+var ordinaryflow1 = L.icon({
+       iconUrl:      './SVG/ordinary_flow1.svg',
+       iconSize:     [65, 50], 
+       iconAnchor:   [22, 94], 
+       popupAnchor:  [-3, -76] 
+});
+
+/*traffic signal normal flow 2*/
+
+var ordinaryflow2 = L.icon({
+       iconUrl:      './SVG/ordinary_flow2.svg',
+       iconSize:     [65, 50], 
+       iconAnchor:   [22, 94], 
+       popupAnchor:  [-3, -76] 
+});
+
+/*traffic signal normal flow 3*/
+
+var ordinaryflow3 = L.icon({
+       iconUrl:	     './SVG/ordinary_flow3.svg',
+       iconSize:     [65, 50], 
+       iconAnchor:   [22, 94], 
+       popupAnchor:  [-3, -76] 
+});
+
+/*Signal placement on map */
+
+var signal_1   = L.marker([37.786188,-122.440033], {icon: ordinaryflow1}).addTo(map);
+var signal_2   = L.marker([37.787237,-122.431801], {icon: ordinaryflow2}).addTo(map);
+var signal_3   = L.marker([37.785359,-122.424704], {icon: ordinaryflow2}).addTo(map);
+var signal_4   = L.marker([37.778739,-122.423349], {icon: ordinaryflow3}).addTo(map);
+var signal_5   = L.marker([37.776381,-122.419514], {icon: ordinaryflow1}).addTo(map);
+var signal_6   = L.marker([37.772811,-122.412835], {icon: ordinaryflow3}).addTo(map);
+var signal_7   = L.marker([37.765782,-122.407557], {icon: ordinaryflow1}).addTo(map);
+
+/*Distance calculation function*/
+
+function toRad(x)				//function to convert into radians
+{
+    return x * Math.PI / 180;
+}
+ 
+function distance_func(latt,lonn,list1_1,list1_2)
+{
+	var Radius = 6371; // radius of the earth in km 
+	var lat1 = parseFloat(latt);
+	var lat2 = parseFloat(list1_1);
+	var lon1 = parseFloat(lonn);
+	var lon2 = parseFloat(list1_2);
+	var lat_diff = lat2-lat1;
+	var dLat = toRad(lat_diff);  
+	var lon_diff = lon2-lon1;	
+	var dLon = toRad(lon_diff);  
+	var calc_1 = (Math.sin(dLat/2) * Math.sin(dLat/2) + 
+             Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * 
+             Math.sin(dLon/2) * Math.sin(dLon/2));  
+	var calc_2 = 2 * Math.atan2(Math.sqrt(calc_1), Math.sqrt(1-calc_1)); 
+	var d = Radius * calc_2;
+	var d = d*1000;
+	return d;
+}
+
+/*Control function for traffic signal synchronization with vehicle*/
+
+function coordination_eye_func(coord_lat,coord_lon)
+{
+	
+	vehicle_distance_coord =  distance_func(coord_lat,coord_lon,trsig_ltln[2*crdeye_num],trsig_ltln[(2*crdeye_num)+1]);
+	
+	
+	if (flag == false)
+	{
+		//checking the condition if the signal changed to green
+		if(typeof(crdeye_chekarray[crdeye_num]) === 'undefined' && vehicle_distance_coord<70)
+
+		{
+			
+			vehicle_marker.fire('pause');
+			flag = true;
+		}
+	}
+}
+
+function traffic_signal_transition_func(m)
+{
+	var signal_type = m;		// specifies the typeof the signal
+	
+	var trsigIcon = [ordinaryflow1,ordinaryflow2,ordinaryflow2,ordinaryflow3,ordinaryflow1,ordinaryflow3,ordinaryflow1];
+	if(signal_type == "red")
+		{
+			
+			var signal_1 = L.marker([trsig_ltln[2*crdeye_num],trsig_ltln[2*crdeye_num+1]],{icon: red_signalIcon}).addTo(map);
+		}
+	
+	if (signal_type == "green")	
+		{
+			
+			var signal_1 = L.marker([trsig_ltln[2*crdeye_num],trsig_ltln[2*crdeye_num+1]],{icon: green_signalIcon}).addTo(map);
+			crdeye_num =parseInt(crdeye_num+1);
+			crdeye_chekarray.push(signal_type);
+			if (flag == true)
+			{
+				vehicle_marker.fire('resume');
+			}
+		}
+	if(signal_type == "withdraw")
+		{
+			 
+			var signal_1 = L.marker([trsig_ltln[(2*crdeye_num)-2],trsig_ltln[(2*crdeye_num)-1]],{icon: trsigIcon[crdeye_num-1]}).addTo(map);
+			
+			flag = false;
+		}
+}
+
+/*Publishing latitude & longitude to server*/
+
+function publishing_func(pub_lat,pub_lon)
+{
+		var lat = pub_lat.substring(0,11);
+	    var lon = pub_lon.substring(0,11);
+	    
+		pubnub.publish({                                    
+			channel : "pub_channel",		//your publishing channel name here
+			message : {lat,lon}
+		})
+};
+
+/*Subscribing to the server*/
+
+function subscribing_func()
+{
+	pubnub.subscribe({
+			channel :"sub_channel",			//your subscribing channel name here
+			message :function (m)
+			{
+				traffic_signal_transition_func(m)
+			},
+			error : function(error)
+			{
+				console.log(JSON.stringify(error));
+			}
+	})
+
+};
+
+function vehicle_stop_func(stop_lat,stop_lon)
+{
+	// distance to know whether the vehicle reached the destination
+	vehicle_dis = distance_func(37.756809,-122.406781,stop_lat,stop_lon);	 
+	if (vehicle_dis <= 50 && count ==0)
+	{
+		pubnub.publish({
+			channel : "pub_channel",
+			message : "stop"});
+	 	count = count +1;
+	}
+}
+
+subscribing_func();
+console.log("ready");
+});
+
+</script>	
+</body>
+</html>
+
+
