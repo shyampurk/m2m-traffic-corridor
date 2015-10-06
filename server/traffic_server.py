@@ -35,8 +35,8 @@ def calculation_function(L_ID,lat,lng):
   	L_list1 = ["37.786188 -122.440033","37.787237 -122.431801",
 				"37.785359 -122.424704","37.778739 -122.423349",
 				"37.776381 -122.419514","37.772811 -122.412835",
-		   		"37.765782 -122.407557","37.756809 -122.406781"]
-				#"37.756930 -122.405238"]
+		   		"37.765782 -122.407557","37.756809 -122.406781",
+				"37.756930 -122.405238"]
 	
 	L_ID =  str(L_ID)
 
@@ -116,7 +116,7 @@ def clearing_function():
 			# checking the TIMEOUT  of the clients in the timestamp list and 
 			# removing the data in the dictionaries and lists of Timeout client's
 			
-			if (time_difference >= 2 and len(dic_tme)>=1 ):
+			if (time_difference >= 30 and len(dic_tme)>=1 ):
 				L_ID = g_process_list[i+1]
 				print L_ID
 				del dic_ID[L_ID]
