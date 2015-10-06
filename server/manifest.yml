@@ -1,0 +1,4 @@
+---
+applications:
+- name: bluemixserverorig
+  memory: 128M
