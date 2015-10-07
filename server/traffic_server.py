@@ -35,33 +35,33 @@ def calculation_function(L_ID,lat,lng):
   	L_list1 = ["37.786188 -122.440033","37.787237 -122.431801",
 				"37.785359 -122.424704","37.778739 -122.423349",
 				"37.776381 -122.419514","37.772811 -122.412835",
-		   		"37.765782 -122.407557","37.756809 -122.406781",
-				"37.756930 -122.405238"]
+		   		"37.765782 -122.407557"]
+		   		
 	
 	L_ID =  str(L_ID)
 
 	if (dic_ID != 0):
-		
-		parameter_lat1 = float(lat)
-		parameter_lng1 = float(lng)
-		
-		#selecting the signal from the list based on the NAS value 
-		L_lat2 = (L_list1[dic_ID[L_ID][1]-1][0:9])
-		L_lng2 = (L_list1[dic_ID[L_ID][1]-1][10:21])
+		if (dic_ID[L_ID][1]<=7):
+			parameter_lat1 = float(lat)
+			parameter_lng1 = float(lng)
+			
+			#selecting the signal from the list based on the NAS value 
+			L_lat2 = (L_list1[dic_ID[L_ID][1]-1][0:9])
+			L_lng2 = (L_list1[dic_ID[L_ID][1]-1][10:21])
+					
+			# calculating the distancse between the vehicle and the approaching signal
+			L_distance = dis_calc(parameter_lat1,parameter_lng1,L_lat2,L_lng2) 
+					
+			# calculating the angle between the vehicle and the approaching signal						
+			L_bearing  = bearng(parameter_lat1,parameter_lng1,L_lat2,L_lng2)   
+					
+			#print L_distance		
+			# Quadrant change
+			if (L_bearing >180 and L_bearing <= 360):                  
+				L_bearing = str(180-L_bearing)
+			L_brng2 = str (L_bearing)
+					
 				
-		# calculating the distancse between the vehicle and the approaching signal
-		L_distance = dis_calc(parameter_lat1,parameter_lng1,L_lat2,L_lng2) 
-				
-		# calculating the angle between the vehicle and the approaching signal						
-		L_bearing  = bearng(parameter_lat1,parameter_lng1,L_lat2,L_lng2)   
-				
-		#print L_distance		
-		# Quadrant change
-		if (L_bearing >180 and L_bearing <= 360):                  
-			L_bearing = str(180-L_bearing)
-		L_brng2 = str (L_bearing)
-				
-		if (dic_ID[L_ID][1]<=7):	
 			L_temp1 = dic_ID[L_ID][2]
 			L_temp1 = str(L_temp1)
 			L_temp2  = L_brng2
@@ -89,7 +89,7 @@ def calculation_function(L_ID,lat,lng):
 					dic_ID[L_ID][2]= L_brng2
 					# setting the flag 	
 					dic_ID[L_ID][3] = False
-		
+			
 	else:
 		print "None of the clients are CONNECTED"	
 
