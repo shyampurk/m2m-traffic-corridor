@@ -1,11 +1,11 @@
 <!--********************************************************************************************
-						       M2M TRAFFIC CORRIDOR FOR EMERGENCY
+			Smart Traffic Management System for Emergency Services
 **********************************************************************************************-->
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset=utf-8 />
-<title>Real-Time Traffic Corridor for Emergency Vehicle (SanFrancisco)</title>
+<title> Smart Traffic Management System for Emergency Services (SanFrancisco)</title>
 <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 <script src='https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.js'></script>
 <link href='https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.css' rel='stylesheet' />
@@ -229,7 +229,7 @@ vehicle_marker.on('resume',function ()
 });
 
 /* Acquiring vehicle marker's latitude & longitude and publishing to pubnub*/
-//var coordinates = document.getElementById('coordinates');
+
 vehicle_marker.on('move',function () 
 {
 	var m = vehicle_marker.getLatLng(); 					  	// Gets ambulance marker's current latitude and longitude
@@ -360,18 +360,18 @@ function traffic_signal_transition_func(m)
 {
 	var signal_type = m['signal_type'];		// specifies the typeof the signal
 	var signal_num = m['sig_num'];			// specifies the signal number
-	//console.log(m);
+	
 	
 	// list of the traffic signals with different timings
 	var trsigIcon = [ordinaryflow1,ordinaryflow2,ordinaryflow2,ordinaryflow3,ordinaryflow1,ordinaryflow3,ordinaryflow1];
 	
 	if (signal_type == "timeout")
 	{
-		console.log(signal_type);
+		
 		timeout_message.innerHTML = 'TIMEOUT - Refresh the page to start again' ;
 		flag = false;
 		vehicle_marker.pause();
-		//setTimeout(function(){ vehicle_marker.pause(); }, 1000);
+		
 
 		
 	}
@@ -460,7 +460,7 @@ subscribing_func();
 
 resume_message.innerHTML = 'READY' ;
 setTimeout(function(){ resume_message.innerHTML = '';}, 4000);
-message.innerHTML = "Demo of M2M TRAFFIC CORRIDOR FOR EMERGENCY";
+message.innerHTML = "Demo of Smart Traffic Management System for Emergency Services";
 
 });
 </script>	
