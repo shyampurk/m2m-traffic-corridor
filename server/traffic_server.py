@@ -1,5 +1,5 @@
 #*****************************************************************************************
-#			M2M TRAFFIC CORRIDOR FOR EMERGENCY
+#			Smart Traffic Management System for Emergency Services
 #*****************************************************************************************
 
 #!usr/bin/python
