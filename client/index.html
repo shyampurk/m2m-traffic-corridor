@@ -413,7 +413,14 @@ function publishing_func(pub_lat,pub_lon)
 			pubnub.publish
 			({                                    
 				channel : "pub_channel",		
-				message : {ID,lat,lon,status}
+				message : {ID,lat,lon,status},
+				error : function(error)
+				{
+					console.log(JSON.stringify(error));
+					timeout_message.innerHTML = 'NETWORK ERROR - Refresh the page to start again';
+					flag = false;
+					vehicle_marker.pause();
+				}
 			})
 		}
 		
