@@ -41,7 +41,7 @@ For hosting your own demo, follow the steps as given below
 3. Open a web browser and load the client side web page and follow the steps as defined above in "RUN THE DEMO" section. 
 
 
-#ASSUMPTIONS
+##ASSUMPTIONS
 
 1. For the sake of brevity, the client web applciation only shows the traffic signal status at the approaching side of the route. 
 2. The server is assumed to be always on and available. Server outage is not handled by the client.
