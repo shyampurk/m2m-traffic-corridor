@@ -1,13 +1,13 @@
 # Smart Traffic Management System for Emergency Services
 
 ##OVERVIEW
-This is a simulated demonstration of realtime traffic control to enable passage of an ambulance through an ad-hoc, on demand traffic corridor.   
+This is a simulated demonstration of realtime traffic control to enable passage of an ambulance through an ad-hoc, on-demand traffic corridor.   
 
 
 ##INTRODUCTION
-This demo assumes a pre defined route starting from Mount Zion Hospital, San Fransisco to San Fransisco General Hospital, along with a bunch of traffic signals which man the intersections enroute. 
+This demo assumes a pre defined route starting from Mount Zion Hospital, San Francisco to San Francisco General Hospital, along with a bunch of traffic signals which man the intersections enroute. 
 
-The client application consists of a mapbox based web interface for simulating ambulance movement through this pre-defined route. Whenever an ambulance starts its journey from Mount Zion hospital, it periodically sends its location data to a traffic management server (TMS) hosted on IBM Bluemix.  The TMS also keeps a tab of the traffic signals and tracks the movement of ambulance along the route. Whenever the ambulance is within a centain distance of an approaching signal, the TMS commands that traffic signal to turn Green to allow the passage of traffic. After the ambulance crosses the signal, TMS issues another command to the signal to resume its normal operation. 
+The client application consists of a mapbox based web interface for simulating ambulance movement through this pre-defined route. Whenever an ambulance starts its journey from Mount Zion hospital, it periodically sends its location data to a Traffic Management Server (TMS) hosted on IBM Bluemix.  The TMS also keeps a tab of the traffic signals and tracks the movement of ambulance along the route. Whenever the ambulance is within a centain distance of an approaching signal, the TMS commands that traffic signal to turn Green to allow the passage of traffic. After the ambulance crosses the signal, TMS issues another command to the signal to resume its normal operation. 
 
 The entire communication between the ambulance, the TMS and the individual traffic signals happens via PubNub. 
 
@@ -19,13 +19,13 @@ An existing instance of TMS is already hosted on IBM Bluemix and is currently ru
 
 To run the client application , perform the following steps
 
-1. Open the [HTML file](client/index.html) on a web browser.
+1. Download the source code of this repo and open the [HTML file](client/index.html), under client directory, in a web browser.
 
 2. Wait for the map to load and show the route and the traffic signal lights along with the ambulance icon at the start point.
 
 3. Click on the ambulance icon to start its journey. You will notice that the ambulance icon will start moving along the route.
 
-4. Notice how an individual traffic signal changes its status when ambulance approaches and crosses it.
+4. Notice how the individual traffic signal changes its status when ambulance approaches and crosses it.
 
 5. The updates on traffic signal are also captured in a status message displayed at the bottom left corner of the screen.
 
