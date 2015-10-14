@@ -19,8 +19,8 @@ An existing instance of TMS is already hosted on IBM Bluemix and is currently ru
 
 To run the client application , perform the following steps
 
-1. Download the source code of this repo and open the [HTML file](client/index.html), under client directory, in a web browser.
-
+1. Open the [Demo Link](http://shyampurk.github.io/m2m-traffic-corridor/client/) in a web browser.
+2. 
 2. Wait for the map to load and show the route and the traffic signal lights along with the ambulance icon at the start point.
 
 3. Click on the ambulance icon to start its journey. You will notice that the ambulance icon will start moving along the route.
@@ -38,7 +38,7 @@ For hosting your own demo, follow the steps as given below
 
 2. Run the python script 
 
-3. Open a web browser and load the client side web page and follow the steps as defined above in "RUN THE DEMO" section. 
+3. Open a web browser and load the [client side web page](client/index.html) and follow the steps as defined above in "RUN THE DEMO" section, from step 2 onwards. 
 
 
 ##ASSUMPTIONS
