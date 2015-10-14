@@ -19,7 +19,7 @@ An existing instance of TMS is already hosted on IBM Bluemix and is currently ru
 
 To run the client application , perform the following steps
 
-1. Open the [Demo Link](http://shyampurk.github.io/m2m-traffic-corridor/client/){:target="_blank"} in a web browser.
+1. Open the [Demo Link](http://shyampurk.github.io/m2m-traffic-corridor/client/) in a web browser.
 
 2. Wait for the map to load and show the route and the traffic signal lights along with the ambulance icon at the start point.
 
