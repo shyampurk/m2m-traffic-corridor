@@ -1,2 +1,2 @@
-# Simulated Machine-to-Machine communication for enabling realtime traffic corridor 
-Realtime M2M Traffic corridor creation for emergency service
+# Traffic Management Server
+This is the application server codebase for implementing TMS using python.
