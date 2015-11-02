@@ -5,9 +5,9 @@ This is a simulated demonstration of realtime traffic control to enable passage 
 
 
 ##INTRODUCTION
-This demo assumes a pre defined route starting from Mount Zion Hospital, San Francisco to San Francisco General Hospital, along with a bunch of traffic signals which man the intersections enroute. 
+This demo assumes a pre defined route starting from Mount Zion Hospital, San Francisco to San Francisco General Hospital, along with a bunch of traffic signals which man the road intersections enroute. 
 
-The client application consists of a mapbox based web interface for simulating ambulance movement through this pre-defined route. Whenever an ambulance starts its journey from Mount Zion hospital, it periodically sends its location data to a Traffic Management Server (TMS) hosted on IBM Bluemix.  The TMS also keeps a tab of the traffic signals and tracks the movement of ambulance along the route. Whenever the ambulance is within a centain distance of an approaching signal, the TMS commands that traffic signal to turn Green to allow the passage of traffic. After the ambulance crosses the signal, TMS issues another command to the signal to resume its normal operation. 
+The client application consists of a mapbox based web interface for simulating ambulance movement through this pre-defined route. Whenever an ambulance starts its journey from Mount Zion hospital, it periodically sends its location data to a Traffic Management Server (TMS) hosted on IBM Bluemix.  The TMS also keeps a tab of the traffic signals and tracks the movement of ambulance along the route. Whenever the ambulance is within a centain distance of an approaching signal, the TMS commands that traffic signal to turn Green to allow the passage of traffic. After the ambulance crosses the signal, TMS issues another command to indicate resumption of normal operation for that traffic signal. 
 
 The entire communication between the ambulance, the TMS and the individual traffic signals happens via PubNub. 
 
@@ -34,11 +34,19 @@ To run the client application , perform the following steps
 
 For hosting your own demo, follow the steps as given below
 
-1. Download/fork the source code of this repository and update the PubNub keys at the [server side](server/traffic_server.py)  and [client side](client/index.html)
+1. Download/fork the source code of this repository and update the PubNub keys at the [application server side](server/traffic_server.py)  and [client side](client/index.html)
 
-2. Run the python script 
+2. Signup to create your trial [IBM Bluemix account](https://developer.ibm.com/bluemix/#gettingstarted).
+ 
+3. Follow the [Bluemix Documentation](https://www.ng.bluemix.net/docs/) to create your bluemix container
 
-3. Open a web browser and load the [client side web page](client/index.html) and follow the steps as defined above in "RUN THE DEMO" section, from step 2 onwards. 
+4. Install the [PubNub service](https://www.pubnub.com/blog/2015-09-09-getting-started-pubnub-ibm-bluemix/) and attach it to your comtainer.
+ 
+5. Install and initialize the [python application runtime](https://www.ng.bluemix.net/docs/starters/python/index.html) 
+
+6. Load the application server under your python application deployed on Bluemix and start the application from Bluemix console.
+ 
+7. Open a web browser and load the client side web page (index.html) and follow the steps as defined above in "RUN THE DEMO" section, from step 2 onwards. 
 
 
 ##ASSUMPTIONS
