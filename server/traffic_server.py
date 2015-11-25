@@ -12,8 +12,8 @@ import time
 
 # publish and subscribe keys
 
-pubnub = Pubnub(publish_key="pub-c-f94f01bd-5e0f-4a75-95ab-33c8928b5fc4",       
-				subscribe_key="sub-c-75be36e2-602a-11e5-b50b-0619f8945a4f")   
+pubnub = Pubnub(publish_key="pub-c-cccc9d9c-50db-4aba-9f5f-11a800dd17b5",       
+				subscribe_key="sub-c-5e2f4258-e7dc-11e4-8e57-02ee2ddab7fe")   
 '''
 	Names of the variables in the 'dic_ID[L_ID]' list
 	dic_ID[L_ID][0] = L_ID --> client's unique identification number
